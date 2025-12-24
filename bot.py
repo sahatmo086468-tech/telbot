@@ -5,13 +5,17 @@ from datetime import datetime
 from collections import defaultdict
 from threading import Lock
 
-# ═══════════════════════════════════════════════════════
-# تنظیمات اولیه
-# ═══════════════════════════════════════════════════════
+import os
 
-TOKEN = "bot token"
-BOT_USERNAME = "bot id"
-ADMINS = [1111, ]
+TOKEN = os.getenv("BOT_TOKEN")
+BOT_USERNAME = os.getenv("BOT_USERNAME")
+
+ADMINS = [
+    int(admin_id)
+    for admin_id in os.getenv("ADMINS", "").split(",")
+    if admin_id.strip()
+]
+
 
 bot = telebot.TeleBot(TOKEN)
 
