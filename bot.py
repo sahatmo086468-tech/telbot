@@ -125,9 +125,7 @@ class T:
         "📤 در حال نوشتن پیام ناشناس به: 👤 <b>{name}</b>\n\n"
         "💬 متن، عکس، ویدیو، ویس، فایل یا استیکر خود را بفرستید:"
     )
-    ADMIN_NOTICE = (
-        "\n\n⚠️ <i>توجه: گیرنده این پیام مدیر ربات است و هویت فرستنده برای او قابل مشاهده است.</i>"
-    )
+    
     COMPOSING_REPLY = "✍️ در حال نوشتن پاسخ هستید. پیام خود را بفرستید:"
     ASK_NAME = (
         "📝 نام نمایشی جدید خود را ارسال کنید:\n"
@@ -153,7 +151,6 @@ class T:
         "🚫 مزاحم را بلاک کنید؛ در «تنظیمات › لیست بلاک‌ها» هر وقت خواستید رفع بلاک کنید.\n"
         "🚩 پیام‌های توهین‌آمیز را گزارش کنید تا مدیران بررسی کنند.\n"
         "⏸ از تنظیمات می‌توانید دریافت پیام را موقتاً متوقف یا لینک جدید بسازید.\n\n"
-        "⚠️ توجه: مدیران ربات هنگام دریافت پیام یا بررسی گزارش تخلف، اطلاعات فرستنده را می‌بینند."
     )
     ABOUT = "🤖 <b>ربات پیام ناشناس</b>\nتوسعه‌یافته با Python و Telebot\nنسخه: 6.0"
     BANNED_NOTICE = "⛔️ دسترسی شما به ربات به دلیل نقض قوانین محدود شد."
@@ -761,8 +758,7 @@ def open_anonymous_session(message, payload):
 
     set_state(uid, "sending_anonymous", {"target": target_id})
     text = T.COMPOSING.format(name=esc(display_name_of(target)))
-    if ADMIN_DISCLOSURE and ADMIN_SEES_SENDER and target_id in ADMINS:
-        text += T.ADMIN_NOTICE
+  
     bot.send_message(uid, text, reply_markup=kb_cancel())
 
 
