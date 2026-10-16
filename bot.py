@@ -378,7 +378,7 @@ def block_user(blocker_id, blocked_id):
 
 
 def get_alias(receiver_id, sender_id):
-    """Stable 'Anonymous #N' number of a sender inside one receiver's inbox."""
+    """Random, stable number of a sender inside one receiver's inbox (e.g. 482913)."""
     row = db.one(
         "SELECT number FROM aliases WHERE receiver_id=? AND sender_id=?", (receiver_id, sender_id)
     )
@@ -390,7 +390,10 @@ def get_alias(receiver_id, sender_id):
         )
         if row:
             return row["number"]
-        number = db.val("SELECT MAX(number) FROM aliases WHERE receiver_id=?", (receiver_id,), 0) + 1
+        while True:
+            number = secrets.randbelow(900000) + 100000  # شش‌رقمی: 100000 تا 999999
+            if not db.one("SELECT 1 FROM aliases WHERE receiver_id=? AND number=?", (receiver_id, number)):
+                break
         db.run(
             "INSERT INTO aliases (receiver_id, sender_id, number) VALUES (?, ?, ?)",
             (receiver_id, sender_id, number),
